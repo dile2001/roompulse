@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
-
 	"strconv"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -129,6 +129,12 @@ func main() {
 
 		if err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		var extra any
+		err = decoder.Decode(&extra)
+		if err != io.EOF {
+			http.Error(w, "request body must contain only one JSON object", http.StatusBadRequest)
 			return
 		}
 		if request.DeviceID == "" {
