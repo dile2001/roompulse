@@ -19,13 +19,13 @@ func main() {
 	reading := SensorReading{
 		DeviceID:    "room-01",
 		Temperature: 27.4,
-		Timestamp:   time.Now(),
 	}
 	for {
 
 		fmt.Printf("Device: %s\n", reading.DeviceID)
 		fmt.Printf("Temperature: %.1f°C\n", reading.Temperature)
 		reading.Temperature += (rand.Float64() - 0.5) * 0.6
+		reading.Timestamp = time.Now()
 		data, err := json.Marshal(reading)
 
 		if err != nil {
